@@ -1,10 +1,50 @@
 function initProgram() {
     const inputEl = document.getElementById("inputEl");
-
     const submitButtonEl = document.getElementById("submitBtn")
+    const searchHistoryEL = document.getElementById("searchHistory")
+    const mainSectionEl = document.getElementById("mainSection")
+    let previousSearches;
+    
     let cityName;
-
     let informationGathered;
+
+    function renderStart(){
+        previousSearches = JSON.parse(localStorage.getItem('previousSearches'))
+        updateSearchHistory();
+    }
+
+    submitButtonEl.addEventListener("click", function(){
+        event.preventDefault();
+        cityName = inputEl.value;
+        saveInformation();
+        updateSearchHistory();
+        getInfo();
+    })
+    
+    function saveInformation(){
+        const duplicateSearch = previousSearches.indexOf(cityName);
+        if (duplicateSearch !== -1){
+            previousSearches.splice(duplicateSearch, 1);
+        }
+        previousSearches.push(cityName);
+        localStorage.setItem('previousSearches', JSON.stringify(previousSearches));
+        // getInfo();
+    }
+
+    function updateSearchHistory(){;
+       searchHistoryEL.innerHTML = "";
+        if (previousSearches !==null){
+            for (let i = 0; i<previousSearches.length; i++)
+            $('#searchHistory').prepend(`
+            <li class="previous-searches">
+            `+previousSearches[i]+`
+            </li>
+            `
+            )
+        } else {
+            previousSearches = [];
+        }
+    }
 
     function getFahrenheit(k){
         return Math.floor((k - 273.15)* 1.8000+ 32.00);
@@ -13,23 +53,24 @@ function initProgram() {
     function getInfo() {
         const apiKey = "&appid=201eb0ee5ccf4e9d19410ecb6a7d9eba"
         let queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="
-        console.log(cityName);
-        
-        console.log(queryURL+cityName+apiKey);
-
         axios.get(queryURL+cityName+apiKey)
             .then(function (response) {
                 informationGathered = response.data;
                 renderWeather();
+                if(informationGathered === undefined){
+                    alert("Failed to find city.")
+                }
             }
             )
     }
 
     function renderWeather(){
 
+        mainSectionEl.innerHTML = ` <div class="row" id="weatherForecast"> </div>`;
+        
 
         $('#mainSection').prepend(`
-         <div class="row">
+            <div class="row">
                <div class="col">
                    <h2>
                     ` +informationGathered.city.name+ ` <span class="indent"> `+ informationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
@@ -48,9 +89,10 @@ function initProgram() {
                            Wind Speed: `+informationGathered.list[4].wind.speed+`
                        </li>
                    </ul>
-               </d
+                </div>
+            </div>
                
-               <div class="row">
+            <div class="row">
                <div class="col">
                     <h3>
                         5-Day Forecast:
@@ -60,11 +102,15 @@ function initProgram() {
         )
 
         for (let i = 0; i<5; i++){
+
             $('#weatherForecast').append(`
-            <div class="col weather-card">
+            <div class="col weather-card `+informationGathered.list[i*8+4].weather[0].main+`">
                 <h4>
                 `+informationGathered.list[i*8+4].dt_txt.slice(5, 10)+`
                 </h4>
+                <p>
+                Conditions: `+informationGathered.list[i*8+4].weather[0].main+`
+                </p>
                 <p>
                 Temperature: `+getFahrenheit(informationGathered.list[i*8+4].main.temp)+`
                 </p>
@@ -73,16 +119,11 @@ function initProgram() {
                 </p>
              </div>
              `
-             )} 
+             )}                 
 
     } 
 
-    submitButtonEl.addEventListener("click", function(){
-        event.preventDefault();
-        cityName = inputEl.value;
-        getInfo();
-    })
-
+    renderStart();
 } initProgram();
 
 
