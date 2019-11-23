@@ -1,6 +1,6 @@
 function initProgram() {
     const inputEl = document.getElementById("inputEl");
-    console.log(inputEl);
+
     const submitButtonEl = document.getElementById("submitBtn")
     let cityName;
 
@@ -26,44 +26,50 @@ function initProgram() {
     }
 
     function renderWeather(){
-        console.log(informationGathered);
+
 
         $('#mainSection').prepend(`
-
-            <div class="row">
+         <div class="row">
                <div class="col">
                    <h2>
-                    ` +informationGathered.city.name+ `
+                    ` +informationGathered.city.name+ ` <span class="indent"> `+ informationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
                    </h2>
                    <ul>
                      <li id="uvIndex">
-                           Conditions: `+ informationGathered.list[0].weather[0].main+`
+                           Conditions: `+ informationGathered.list[4].weather[0].main +`
                      </li>
                        <li id="temperature">
-                           Temperature: `+ getFahrenheit(informationGathered.list[0].main.temp)+`
+                           Temperature: `+ getFahrenheit(informationGathered.list[4].main.temp)+`
                        </li>
                        <li id="humidity">
-                           Humidity: `+informationGathered.list[0].main.humidity+`
+                           Humidity: `+informationGathered.list[4].main.humidity+`
                        </li>
                        <li id="windSpeed">
-                           Wind Speed: `+informationGathered.list[0].wind.speed+`
+                           Wind Speed: `+informationGathered.list[4].wind.speed+`
                        </li>
                    </ul>
+               </d
+               
+               <div class="row">
+               <div class="col">
+                    <h3>
+                        5-Day Forecast:
+                    </h3>
                </div>
-            </div>`
+           </div>`
         )
 
         for (let i = 0; i<5; i++){
             $('#weatherForecast').append(`
             <div class="col weather-card">
                 <h4>
-                `+informationGathered.list[i+1].dt_txt.slice(5, 7)+`
+                `+informationGathered.list[i*8+4].dt_txt.slice(5, 10)+`
                 </h4>
                 <p>
-                Temperature: `+getFahrenheit(informationGathered.list[i+1].main.temp)+`
+                Temperature: `+getFahrenheit(informationGathered.list[i*8+4].main.temp)+`
                 </p>
                 <p>
-                Humidity: `+informationGathered.list[i+1].main.humidity+`
+                Humidity: `+informationGathered.list[i*8+4].main.humidity+`
                 </p>
              </div>
              `
@@ -73,9 +79,7 @@ function initProgram() {
 
     submitButtonEl.addEventListener("click", function(){
         event.preventDefault();
-        console.log(inputEl.value)
         cityName = inputEl.value;
-        console.log(cityName);
         getInfo();
     })
 
