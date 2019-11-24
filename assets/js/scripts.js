@@ -44,6 +44,7 @@ function initProgram() {
         } else {
             previousSearches = [];
         }
+        handlePreviousSearches();
     }
 
     function getFahrenheit(k){
@@ -66,33 +67,33 @@ function initProgram() {
 
     function renderWeather(){
 
-        mainSectionEl.innerHTML = ` <div class="row" id="weatherForecast"> </div>`;
+        mainSectionEl.innerHTML = ` <div class="row forecast-boxes" id="weatherForecast"> </div>`;
         
 
         $('#mainSection').prepend(`
-            <div class="row">
+            <div class="row today-weather ` + informationGathered.list[4].weather[0].main +`">
                <div class="col">
                    <h2>
                     ` +informationGathered.city.name+ ` <span class="indent"> `+ informationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
                    </h2>
                    <ul>
                      <li id="uvIndex">
-                           Conditions: `+ informationGathered.list[4].weather[0].main +`
+                           `+ informationGathered.list[4].weather[0].main +`
                      </li>
                        <li id="temperature">
-                           Temperature: `+ getFahrenheit(informationGathered.list[4].main.temp)+`
+                           `+ getFahrenheit(informationGathered.list[4].main.temp)+` ℉
                        </li>
                        <li id="humidity">
-                           Humidity: `+informationGathered.list[4].main.humidity+`
+                           `+informationGathered.list[4].main.humidity+`
                        </li>
                        <li id="windSpeed">
-                           Wind Speed: `+informationGathered.list[4].wind.speed+`
+                           `+informationGathered.list[4].wind.speed+`
                        </li>
                    </ul>
                 </div>
             </div>
                
-            <div class="row">
+            <div class="row forecast-words">
                <div class="col">
                     <h3>
                         5-Day Forecast:
@@ -109,10 +110,10 @@ function initProgram() {
                 `+informationGathered.list[i*8+4].dt_txt.slice(5, 10)+`
                 </h4>
                 <p>
-                Conditions: `+informationGathered.list[i*8+4].weather[0].main+`
+                `+informationGathered.list[i*8+4].weather[0].main+`
                 </p>
                 <p>
-                Temperature: `+getFahrenheit(informationGathered.list[i*8+4].main.temp)+`
+                `+getFahrenheit(informationGathered.list[i*8+4].main.temp)+` ℉
                 </p>
                 <p>
                 Humidity: `+informationGathered.list[i*8+4].main.humidity+`
@@ -122,6 +123,13 @@ function initProgram() {
              )}                 
 
     } 
+
+    function handlePreviousSearches(){
+        const previousSearchEls = document.querySelectorAll(".previous-searches")
+        for (let i=0; i < previousSearchEls.length; i++){
+            const previous
+        }
+    }
 
     renderStart();
 } initProgram();

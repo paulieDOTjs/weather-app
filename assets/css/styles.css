@@ -1,15 +1,143 @@
 header{
     min-height: 10vh;
-    background-color: burlywood;
+    background-color: #0052cc;
+    border-bottom: 2px white solid;
+}
+
+body{
+    background-color: #99c2ff;
 }
 
 .aside-section, .main-section {
-    height: 90vh;
-    border: slategray 5px solid;
+    min-height: auto;
+    background-color: lightslategray;
+
+}
+
+.main-section{
+    border: white 2px solid;
+    padding: 0;
+}
+
+.aside-section{
+    border-left: white 2px solid;
+    border-top: white 2px solid;
+    border-bottom: white 2px solid;
+    min-height: calc(90vh - 96px);
 }
 
 .weather-card{
     background-color: blueviolet;
-    height: 148px;
     margin: 10px;
+    padding: 10px;
+}
+
+.forecast-section, .today-weather {
+    min-height: 50%
+}
+li{
+    list-style: none;
+}
+
+.today-weather, .forecast-boxes, .forecast-words{
+    margin: 16px;
+}
+
+
+
+.previous-searches{
+    height: 30px;
+    border: 1px solid #0066ff;
+    margin-bottom: 10px;
+    background-color: lightsteelblue;
+    margin-left:16px;
+    padding-left: 4px;
+    width:210px;
+}
+
+ul{
+    padding-top: 10px;
+    padding-left: 0;
+}
+
+h3{
+    margin-top: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Thunderstorm{
+background-image: url(../images/thunderstorm.jpeg);
+background-size: 100vh;
+}
+.Drizzle{
+background-image: url(../images/drizzle.jpg);
+background-size: 100vh;
+}
+.Rain{
+background-image: url(../images/rainy.jpg);
+background-size: 100vh;
+color: white;
+}
+.Snow{
+background-image: url(../images/snowy.jpg);
+background-size: 100vh;
+}
+.Mist{
+background-image: url(../images/mist.jpg);
+background-size: 100vh;
+}
+.Smoke{
+background-image: url(../images/smoke.jpg);
+background-size: 100vh;
+}
+.Haze{
+background-image: url(../images/haze.jpeg);
+background-size: 100vh;
+}
+.Dust{
+background-image: url(../images/dust.jpg);
+background-size: 100vh;
+}
+.Fog{
+background-image: url(../images/fog.jpeg);
+background-size: 100vh;
+}
+.Sand{
+background-image: url(../images/sand.jpg);
+background-size: 100vh;
+}
+}
+.Ash{
+background-image: url(../images/ash.jpg);
+background-size: 100vh;
+}
+.Squall{
+background-image: url(../images/squall.jpg);
+background-size: 100vh;
+}
+.Tornado{
+background-image: url(../images/tornado.jpg);
+background-size: 100vh;
+}
+.Clear{
+background-image: url(../images/sunny.jpg);
+background-size: 100vh;
+}
+.Clouds{
+background-image: url(../images/cloudy.jpg);
+background-size: 100vh;
+color:white;
 }
