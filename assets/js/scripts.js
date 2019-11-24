@@ -30,7 +30,7 @@ function initProgram() {
     })
 
     //Checks the previousSearches array, removes any duplicates, 
-    // will stop the array from getting to be more than 15 indexes long
+    // will stop the array from getting to be more than 10 indexes long
     // saves information to local storage.
     function saveInformation() {
         const duplicateSearch = previousSearches.indexOf(cityName);
@@ -38,8 +38,8 @@ function initProgram() {
             previousSearches.splice(duplicateSearch, 1);
         }
 
-        if (previousSearches.length > 15) {
-            previousSearches.splice(-15, 1);
+        if (previousSearches.length > 10) {
+            previousSearches.splice(-11, 1);
         }
         previousSearches.push(cityName);
         localStorage.setItem('previousSearches', JSON.stringify(previousSearches));
@@ -104,16 +104,16 @@ function initProgram() {
                    </h2>
                    <ul>
                      <li id="uvIndex">
-                           `+ informationGathered.list[4].weather[0].main + `
+                           Conditions: `+ informationGathered.list[4].weather[0].main + `
                      </li>
                        <li id="temperature">
-                           `+ getFahrenheit(informationGathered.list[4].main.temp) + ` ℉
+                           Temperature: `+ getFahrenheit(informationGathered.list[4].main.temp) + ` ℉
                        </li>
                        <li id="humidity">
-                           `+ informationGathered.list[4].main.humidity + `
+                           Humidity: `+ informationGathered.list[4].main.humidity + `
                        </li>
                        <li id="windSpeed">
-                           `+ informationGathered.list[4].wind.speed + `
+                           Wind Speed: `+ informationGathered.list[4].wind.speed + `
                        </li>
                    </ul>
                 </div>

@@ -43,16 +43,16 @@ li{
     margin: 16px;
 }
 
-
-
 .previous-searches{
-    height: 30px;
+    height: 36px;
     border: 1px solid #0066ff;
     margin-bottom: 10px;
     background-color: lightsteelblue;
     margin-left:16px;
     padding-left: 4px;
     width:210px;
+    font-size: 24px;
+
 }
 
 .previous-searches:hover{
@@ -69,8 +69,13 @@ h3{
     margin-top: 12px;
 }
 
+.search-text{
+    font-size: 24px;
+}
 
-
+button{
+    margin-top: 4px;
+}
 
 
 
