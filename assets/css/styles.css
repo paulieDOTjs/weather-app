@@ -55,6 +55,11 @@ li{
     width:210px;
 }
 
+.previous-searches:hover{
+    background-color: steelblue;
+    cursor: pointer;
+}
+
 ul{
     padding-top: 10px;
     padding-left: 0;
