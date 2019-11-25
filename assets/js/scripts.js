@@ -5,7 +5,7 @@ function initProgram() {
     const mainSectionEl = document.getElementById("mainSection")
     let previousSearches;
 
-    let cityName;
+    let cityName = "Minneapolis";
     let informationGathered;
 
 
@@ -14,6 +14,7 @@ function initProgram() {
     function renderStart() {
         previousSearches = JSON.parse(localStorage.getItem('previousSearches'))
         updateSearchHistory();
+        runProgram();
     }
 
     function runProgram(){
@@ -156,7 +157,6 @@ function initProgram() {
         const previousSearchEls = document.querySelectorAll(".previous-searches")
         for (let i = 0; i < previousSearchEls.length; i++) {
             const SearchEl = previousSearchEls[i];
-            console.log(SearchEl.innerText);
             SearchEl.addEventListener("click", function () {
                 cityName = SearchEl.innerText;
                 runProgram();
@@ -167,101 +167,4 @@ function initProgram() {
 
     renderStart();
 } initProgram();
-
-
-
-
-
-
-
-
-
-
-
-
-
-//<button data-searchterm="arnold schwarzenegger">
-
-// const searchTerm = 
-
-// const inputEl = document.getElementById("search");
-// const result = inputEl.value
-// console.log(result)
-
-// searchButtonEl = document.getElementById("search-button");
-// clearButtonEl = document.getElementById("clear-button");
-// searchButtonEl.addEventListener("click", function (event) {
-//     event.preventDefault();
-//     const inputEl = document.getElementById("search");
-//     const userInput = inputEl.value
-//     const queryURL = "https://pokeapi.co/api/v2/pokemon/" + userInput;
-//     let informationGathered;
-
-
-
-
-
-
-
-
-
-
-//     function getInfo() {
-//         axios.get(queryURL)
-//             .then(function (response) {
-//                 // const person = this.getAttribute("data-person");  
-//                 // const results = response.data.data;=
-//                 informationGathered = response.data.abilities;
-//                 console.log(informationGathered)
-//                 printInformation();
-//             }
-//          )
-
-//     }
-
-
-
-
-
-
-
-
-
-
-
-
-//     function printInformation() {
-//         for (let i = 0; informationGathered.length; i++) {
-//             $('#topArticles').append(`
-//             <li class="section-articles">
-//                 <span id ="resultTitle">
-//                 `+ informationGathered[i].ability.name + `
-//                 </span>
-//                 <h3 id ="resultAuthor">
-//                 `+ informationGathered[i].is_hidden + `
-//                 </h3 id ="resultSection">
-//                 <h3>
-//                 `+ informationGathered[i].slot + `
-//                 </h3>
-//                 <h3 id ="resultDate">
-//             I don't care
-//                 </h3>
-//                     <a href="https://google.com" id ="resultURL">google.com</a>
-//                  </li>
-//             `);
-//         }
-//     }
-
-//     getInfo();
-// })
-// clearButtonEl.addEventListener("click", function (event) {
-//     event.preventDefault();
-//     console.log("You hit the clear button! I'm so proud of you.")
-// })
-
-
-
-
-
-
 
