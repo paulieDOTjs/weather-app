@@ -3,10 +3,13 @@ function initProgram() {
     const submitButtonEl = document.getElementById("submitBtn")
     const searchHistoryEL = document.getElementById("searchHistory")
     const mainSectionEl = document.getElementById("mainSection")
+    const apiKey = "appid=201eb0ee5ccf4e9d19410ecb6a7d9eba"
+    const uvAPI = ""
     let previousSearches;
 
     let cityName = "Minneapolis";
-    let informationGathered;
+    let forecastInformationGathered;
+    let uvInformationGathered;
 
 
     //Retrieves previous searches from local storage 
@@ -17,13 +20,13 @@ function initProgram() {
         runProgram();
     }
 
-    function runProgram(){
+    function runProgram() {
         saveInformation();
         updateSearchHistory();
-        getInfo();
+        getForecasetInfo();
     }
     //Adds event listener to submit button 
-    // references the following functions: saveInformation, updateSearchHistory, and getInfo
+    // references the following functions: saveInformation, updateSearchHistory, and getForecasetInfo
     submitButtonEl.addEventListener("click", function () {
         event.preventDefault();
         cityName = inputEl.value;
@@ -44,7 +47,7 @@ function initProgram() {
         }
         previousSearches.push(cityName);
         localStorage.setItem('previousSearches', JSON.stringify(previousSearches));
-        // getInfo();
+        // getForecasetInfo();
     }
 
     //erases previous search history list items
@@ -74,18 +77,29 @@ function initProgram() {
     }
 
     //gets information from weather API
-    //saves that information to informationGathered variable
+    //saves that information to forecastInformationGathered variable
     //runs renderWeather function
-    function getInfo() {
-        const apiKey = "&appid=201eb0ee5ccf4e9d19410ecb6a7d9eba"
-        let queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="
+    function getForecasetInfo() {
+        const queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=&";
         axios.get(queryURL + cityName + apiKey)
             .then(function (response) {
-                informationGathered = response.data;
+                forecastInformationGathered = response.data;
+                console.log(forecastInformationGathered);
+                getUV();
+            }
+            )
+    }
+
+    function getUV() {
+        console.log(forecastInformationGathered.city.coord.lat);
+        const uvURL = "http://api.openweathermap.org/data/2.5/uvi?"+apiKey+"&lat="+forecastInformationGathered.city.coord.lat+"&lon="+forecastInformationGathered.city.coord.lon;
+        console.log(uvURL);
+        axios.get(uvURL)
+            .then(function (response) {
+                console.log(response);
+                uvInformationGathered = response.data;
+                console.log(uvInformationGathered)
                 renderWeather();
-                if (informationGathered === undefined) {
-                    alert("Failed to find city.")
-                }
             }
             )
     }
@@ -98,24 +112,27 @@ function initProgram() {
 
 
         $('#mainSection').prepend(`
-            <div class="row today-weather ` + informationGathered.list[4].weather[0].main + `">
+            <div class="row today-weather ` + forecastInformationGathered.list[4].weather[0].main + `">
                <div class="col">
                    <h2>
-                    ` + informationGathered.city.name + ` <span class="indent"> ` + informationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
+                    ` + forecastInformationGathered.city.name + ` <span class="indent"> ` + forecastInformationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
                    </h2>
                    <ul>
                      <li id="uvIndex">
-                           Conditions: `+ informationGathered.list[4].weather[0].main + `
+                           Conditions: `+ forecastInformationGathered.list[4].weather[0].main + `
                      </li>
                        <li id="temperature">
-                           Temperature: `+ getFahrenheit(informationGathered.list[4].main.temp) + ` ℉
+                           Temperature: `+ getFahrenheit(forecastInformationGathered.list[4].main.temp) + ` ℉
                        </li>
                        <li id="humidity">
-                           Humidity: `+ informationGathered.list[4].main.humidity + `
+                           Humidity: `+ forecastInformationGathered.list[4].main.humidity + `
                        </li>
                        <li id="windSpeed">
-                           Wind Speed: `+ informationGathered.list[4].wind.speed + `
+                           Wind Speed: `+ forecastInformationGathered.list[4].wind.speed + `
                        </li>
+                       <li id="uvInfo">
+                            uvInfo: `+ previousSearches + `
+                        </li>
                    </ul>
                 </div>
             </div>
@@ -132,18 +149,18 @@ function initProgram() {
         for (let i = 0; i < 5; i++) {
 
             $('#weatherForecast').append(`
-            <div class="col weather-card `+ informationGathered.list[i * 8 + 4].weather[0].main + `">
+            <div class="col weather-card `+ forecastInformationGathered.list[i * 8 + 4].weather[0].main + `">
                 <h4>
-                `+ informationGathered.list[i * 8 + 4].dt_txt.slice(5, 10) + `
+                `+ forecastInformationGathered.list[i * 8 + 4].dt_txt.slice(5, 10) + `
                 </h4>
                 <p>
-                `+ informationGathered.list[i * 8 + 4].weather[0].main + `
+                `+ forecastInformationGathered.list[i * 8 + 4].weather[0].main + `
                 </p>
                 <p>
-                `+ getFahrenheit(informationGathered.list[i * 8 + 4].main.temp) + ` ℉
+                `+ getFahrenheit(forecastInformationGathered.list[i * 8 + 4].main.temp) + ` ℉
                 </p>
                 <p>
-                Humidity: `+ informationGathered.list[i * 8 + 4].main.humidity + `
+                Humidity: `+ forecastInformationGathered.list[i * 8 + 4].main.humidity + `
                 </p>
              </div>
              `
