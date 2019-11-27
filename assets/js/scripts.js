@@ -96,7 +96,7 @@ function initProgram() {
     }
 
     function getUV() {
-        const uvURL = "http://api.openweathermap.org/data/2.5/uvi?&appid="+apiKey+"&lat="+forecastInformationGathered.city.coord.lat+"&lon="+forecastInformationGathered.city.coord.lon;
+        const uvURL = "https://api.openweathermap.org/data/2.5/uvi?&appid="+apiKey+"&lat="+forecastInformationGathered.city.coord.lat+"&lon="+forecastInformationGathered.city.coord.lon;
         axios.get(uvURL)
             .then(function (response) {
                 uvInformationGathered = response;
