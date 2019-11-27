@@ -77,7 +77,14 @@ button{
     margin-top: 4px;
 }
 
+h1{
+    text-align: center;
+    width: 100%;
+}
 
+.weather-dudes{
+    margin-bottom: 30px;
+}
 
 
 
