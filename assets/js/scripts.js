@@ -3,11 +3,10 @@ function initProgram() {
     const submitButtonEl = document.getElementById("submitBtn")
     const searchHistoryEL = document.getElementById("searchHistory")
     const mainSectionEl = document.getElementById("mainSection")
-    const apiKey = "appid=201eb0ee5ccf4e9d19410ecb6a7d9eba"
-    const uvAPI = ""
+    const apiKey = "201eb0ee5ccf4e9d19410ecb6a7d9eba"
     let previousSearches;
 
-    let cityName = "Minneapolis";
+    let cityName;
     let forecastInformationGathered;
     let uvInformationGathered;
 
@@ -17,6 +16,12 @@ function initProgram() {
     function renderStart() {
         previousSearches = JSON.parse(localStorage.getItem('previousSearches'))
         updateSearchHistory();
+        if (previousSearches[previousSearches.length-1] === undefined){
+            cityName = "Minneapolis"
+        } else{
+            cityName = previousSearches[previousSearches.length-1];
+
+        }
         runProgram();
     }
 
@@ -80,24 +85,21 @@ function initProgram() {
     //saves that information to forecastInformationGathered variable
     //runs renderWeather function
     function getForecasetInfo() {
-        const queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=&";
-        axios.get(queryURL + cityName + apiKey)
+        const queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
+
+        axios.get(queryURL + cityName+ '&appid=' + apiKey)
             .then(function (response) {
                 forecastInformationGathered = response.data;
-                console.log(forecastInformationGathered);
                 getUV();
             }
             )
     }
 
     function getUV() {
-        console.log(forecastInformationGathered.city.coord.lat);
-        const uvURL = "http://api.openweathermap.org/data/2.5/uvi?"+apiKey+"&lat="+forecastInformationGathered.city.coord.lat+"&lon="+forecastInformationGathered.city.coord.lon;
-        console.log(uvURL);
+        const uvURL = "http://api.openweathermap.org/data/2.5/uvi?&appid="+apiKey+"&lat="+forecastInformationGathered.city.coord.lat+"&lon="+forecastInformationGathered.city.coord.lon;
         axios.get(uvURL)
             .then(function (response) {
-                console.log(response);
-                uvInformationGathered = response.data;
+                uvInformationGathered = response;
                 console.log(uvInformationGathered)
                 renderWeather();
             }
@@ -118,20 +120,20 @@ function initProgram() {
                     ` + forecastInformationGathered.city.name + ` <span class="indent"> ` + forecastInformationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
                    </h2>
                    <ul>
-                     <li id="uvIndex">
+                     <li class="weather-dudes">
                            Conditions: `+ forecastInformationGathered.list[4].weather[0].main + `
                      </li>
-                       <li id="temperature">
+                     <li class="weather-dudes">
                            Temperature: `+ getFahrenheit(forecastInformationGathered.list[4].main.temp) + ` ℉
-                       </li>
-                       <li id="humidity">
+                    </li>
+                     <li class="weather-dudes">
                            Humidity: `+ forecastInformationGathered.list[4].main.humidity + `
-                       </li>
-                       <li id="windSpeed">
+                    </li>
+                     <li class="weather-dudes">
                            Wind Speed: `+ forecastInformationGathered.list[4].wind.speed + `
-                       </li>
-                       <li id="uvInfo">
-                            uvInfo: `+ previousSearches + `
+                    </li>
+                     <li class="weather-dudes">
+                            UV Index: `+ uvInformationGathered.data.value + `
                         </li>
                    </ul>
                 </div>
