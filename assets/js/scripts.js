@@ -7,6 +7,7 @@ function initProgram() {
     let previousSearches;
 
     let cityName;
+    let currentWeatherInformation;
     let forecastInformationGathered;
     let uvInformationGathered;
 
@@ -16,10 +17,10 @@ function initProgram() {
     function renderStart() {
         previousSearches = JSON.parse(localStorage.getItem('previousSearches'))
         updateSearchHistory();
-        if (previousSearches[previousSearches.length-1] === undefined){
+        if (previousSearches[previousSearches.length - 1] === undefined) {
             cityName = "Minneapolis"
-        } else{
-            cityName = previousSearches[previousSearches.length-1];
+        } else {
+            cityName = previousSearches[previousSearches.length - 1];
 
         }
         runProgram();
@@ -28,8 +29,10 @@ function initProgram() {
     function runProgram() {
         saveInformation();
         updateSearchHistory();
-        getForecasetInfo();
+        getCurrentWeather();
     }
+
+
     //Adds event listener to submit button 
     // references the following functions: saveInformation, updateSearchHistory, and getForecasetInfo
     submitButtonEl.addEventListener("click", function () {
@@ -52,7 +55,6 @@ function initProgram() {
         }
         previousSearches.push(cityName);
         localStorage.setItem('previousSearches', JSON.stringify(previousSearches));
-        // getForecasetInfo();
     }
 
     //erases previous search history list items
@@ -60,12 +62,11 @@ function initProgram() {
     //if there is nothing it turns it into an array
     //if there is not nothing it prepends the items to display on the page
     function updateSearchHistory() {
-        ;
         searchHistoryEL.innerHTML = "";
         if (previousSearches !== null) {
             for (let i = 0; i < previousSearches.length; i++)
                 $('#searchHistory').prepend(`
-            <li class="previous-searches">
+            <li class="previous-searches d-flex align-items-center">
             `+ previousSearches[i] + `
             </li>
             `
@@ -81,13 +82,24 @@ function initProgram() {
         return Math.floor((k - 273.15) * 1.8000 + 32.00);
     }
 
+    function getCurrentWeather() {
+        const queryURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+
+        axios.get(queryURL + cityName + '&appid=' + apiKey)
+            .then(function (response) {
+                currentWeatherInformation = response.data;
+                getForecasetInfo();
+            }
+            )
+    }
+
     //gets information from weather API
     //saves that information to forecastInformationGathered variable
     //runs renderWeather function
     function getForecasetInfo() {
         const queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
 
-        axios.get(queryURL + cityName+ '&appid=' + apiKey)
+        axios.get(queryURL + cityName + '&appid=' + apiKey)
             .then(function (response) {
                 forecastInformationGathered = response.data;
                 getUV();
@@ -96,11 +108,10 @@ function initProgram() {
     }
 
     function getUV() {
-        const uvURL = "https://api.openweathermap.org/data/2.5/uvi?&appid="+apiKey+"&lat="+forecastInformationGathered.city.coord.lat+"&lon="+forecastInformationGathered.city.coord.lon;
+        const uvURL = "https://api.openweathermap.org/data/2.5/uvi?&appid=" + apiKey + "&lat=" + forecastInformationGathered.city.coord.lat + "&lon=" + forecastInformationGathered.city.coord.lon;
         axios.get(uvURL)
             .then(function (response) {
                 uvInformationGathered = response;
-                console.log(uvInformationGathered)
                 renderWeather();
             }
             )
@@ -114,23 +125,23 @@ function initProgram() {
 
 
         $('#mainSection').prepend(`
-            <div class="row today-weather ` + forecastInformationGathered.list[4].weather[0].main + `">
+            <div class="row today-weather ` + currentWeatherInformation.weather[0].main + `">
                <div class="col">
                    <h2>
-                    ` + forecastInformationGathered.city.name + ` <span class="indent"> ` + forecastInformationGathered.list[0].dt_txt.slice(5, 10) + ` </span>
+                    ` + forecastInformationGathered.city.name + ` </span>- Today
                    </h2>
                    <ul>
                      <li class="weather-dudes">
-                           Conditions: `+ forecastInformationGathered.list[4].weather[0].main + `
+                           Conditions: `+ currentWeatherInformation.weather[0].main + `
                      </li>
                      <li class="weather-dudes">
-                           Temperature: `+ getFahrenheit(forecastInformationGathered.list[4].main.temp) + ` ℉
+                           Temperature: `+ getFahrenheit(currentWeatherInformation.main.temp) + ` ℉
                     </li>
                      <li class="weather-dudes">
-                           Humidity: `+ forecastInformationGathered.list[4].main.humidity + `
+                           Humidity: `+ currentWeatherInformation.main.humidity + `
                     </li>
                      <li class="weather-dudes">
-                           Wind Speed: `+ forecastInformationGathered.list[4].wind.speed + `
+                           Wind Speed: `+ currentWeatherInformation.wind.speed + `
                     </li>
                      <li class="weather-dudes">
                             UV Index: `+ uvInformationGathered.data.value + `

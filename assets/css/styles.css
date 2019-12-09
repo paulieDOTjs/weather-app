@@ -9,9 +9,7 @@ body{
 }
 
 .aside-section, .main-section {
-    min-height: auto;
     background-color: lightslategray;
-
 }
 
 .main-section{
@@ -23,7 +21,6 @@ body{
     border-left: white 2px solid;
     border-top: white 2px solid;
     border-bottom: white 2px solid;
-    min-height: calc(90vh - 96px);
 }
 
 .weather-card{
@@ -32,9 +29,6 @@ body{
     padding: 10px;
 }
 
-.forecast-section, .today-weather {
-    min-height: 50%
-}
 li{
     list-style: none;
 }
@@ -49,10 +43,17 @@ li{
     margin-bottom: 10px;
     background-color: lightsteelblue;
     margin-left:16px;
+    margin-right:16px;
     padding-left: 4px;
-    width:210px;
+    padding-right: 4px;
+    width: calc(100%-40px);
     font-size: 24px;
+}
 
+@media screen and (max-width: 768px) {
+    .previous-searches {
+        font-size: 12px;
+    }
 }
 
 .previous-searches:hover{
@@ -63,6 +64,7 @@ li{
 ul{
     padding-top: 10px;
     padding-left: 0;
+    width: 100%;
 }
 
 h3{
@@ -75,6 +77,7 @@ h3{
 
 button{
     margin-top: 4px;
+    width: 100%;
 }
 
 h1{
@@ -95,65 +98,70 @@ h1{
 
 
 
+
+
+
+
+
 .Thunderstorm{
 background-image: url(../images/thunderstorm.jpeg);
-background-size: 100vh;
+background-size: auto;
 }
 .Drizzle{
 background-image: url(../images/drizzle.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Rain{
 background-image: url(../images/rainy.jpg);
-background-size: 100vh;
+background-size: auto;
 color: white;
 }
 .Snow{
 background-image: url(../images/snowy.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Mist{
 background-image: url(../images/mist.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Smoke{
 background-image: url(../images/smoke.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Haze{
 background-image: url(../images/haze.jpeg);
-background-size: 100vh;
+background-size: auto;
 }
 .Dust{
 background-image: url(../images/dust.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Fog{
 background-image: url(../images/fog.jpeg);
-background-size: 100vh;
+background-size: auto;
 }
 .Sand{
 background-image: url(../images/sand.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Ash{
 background-image: url(../images/ash.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Squall{
 background-image: url(../images/squall.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Tornado{
 background-image: url(../images/tornado.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Clear{
 background-image: url(../images/sunny.jpg);
-background-size: 100vh;
+background-size: auto;
 }
 .Clouds{
 background-image: url(../images/cloudy.jpg);
-background-size: 100vh;
+background-size: auto;
 color:white;
 }
